@@ -54,10 +54,11 @@ console.log(playerInfo.name, playerInfo.attack, playerInfo.health);
 var fightOrSkip = function() {
   // ask player if they'd like to fight or run
   var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+  if (promptFight !== null){
+    promptFight = promptFight.toLowerCase();
+  }
   
-    // Conditional Recursive Function Call
-  promptFight = promptFight.toLowerCase();
-
+  // Conditional Recursive Function Call
   if (promptFight === "" || promptFight === null) {
     window.alert("You need to provide a valid answer! Please try again.");
     return fightOrSkip();
@@ -83,10 +84,17 @@ var fightOrSkip = function() {
 
 // fight function
 var fight = function(enemy) {
+    //keep track of who goes first
+    var isPlayerTurn = true;
+    if (Math.random() > 0.5) {
+      isPlayerTurn = false;
+    }
     while (playerInfo.health > 0 && enemy.health > 0) { 
-      if (fightOrSkip()) {
-        //if true, leave fight by breaking loop
-        break;
+      if (isPlayerTurn) {
+      //ask player if they would like to fight or skip
+        if (fightOrSkip()) {
+          //if true, leave fight by breaking loop
+          break;
       }
       // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
       //generate random damage value based on player's attack power
@@ -125,8 +133,10 @@ var fight = function(enemy) {
         window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
       }
     }
+    //switch turn order for next round
+    isPlayerTurn = !isPlayerTurn;
   };
-  
+};
 
 // run fight function to start game
 //fight();
